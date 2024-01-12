@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <data noupdate="1">
+            <record id="attach_receipt_email_template" model="mail.template">
+                <field name="name">Attach Receipt Email Template</field>
+                <field name="email_from">${user.partner_id.email|safe}</field>
+                <field name="subject">Reminder to Attach Expense Receipt for: ${object.name}</field>
+                <field name="email_to">${object.employee_id.work_email|safe}</field>
+                <field name="lang">${object.lang}</field>
+                <field name="model_id" ref="hr_expense.model_hr_expense_sheet"/>
+                <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+
+            % set company = ctx.get('company', user.company_id)
+
+            <div>
+                % if ctx.get('has_button_access'):
+                <div itemscope itemtype="http://schema.org/EmailMessage">
+                    <div itemprop="potentialAction" itemscope itemtype="http://schema.org/ViewAction">
+                    <link itemprop="target" href="${ctx['button_access']['url']}"/>
+                    <link itemprop="url" href="${ctx['button_access']['url']}"/>
+                    <meta itemprop="name" content="View ${ctx['model_name']}"/>
+                </div>
+            </div>
+            % endif
+                <p>Hello,
+                <br/>
+                <p>This is a reminder for you to attach the receipt(s) related to the money you collected from Accounts as
+                per below details:<br/>
+
+                <p>Item: ${object.name}<br/>
+
+                <!--Date: ${object.date}<br/>-->
+
+                Amount: ${object.total_amount}<br/>
+
+                <p>
+                    <a href="/web?db=${'dbname' in ctx and ctx['dbname'] or ''}#&id=${object.id}&view_type=form&model=hr.expense&action=${'action_id'
+                    in ctx and ctx['action_id'] or ''}" style="padding: 5px 10px; font-size: 12px; line-height: 18px;
+                    color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px;
+                    font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap;
+                    background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px">View the Expense</a>
+                </p>
+
+                <p>If you have any questions, check with Accounts Department right away to close this issue.</p>
+                <p>
+                <p>Tii Sheria Bila Shurti!
+                <p>
+
+                Kind Regards,<br/>
+                Accounts Department,
+
+            ]]>
+            </field>
+            </record>
+        </data>
+    </data>
+</odoo>

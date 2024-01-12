@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <record id="view_hr_expense_sheet_form_inherit" model="ir.ui.view">
+            <field name="name">hr_expense.hr_expense_form_view</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+            <field name="arch" type="xml">
+                <!--Add a button to the existing header-->
+                <xpath expr="//header" position="inside">
+                    <button name="send_email_template" string="Notify Manager by e-mail"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('state','in',['draft','done','refused','approve','post','cancel'])]}"
+                            confirm="Send Email Notification to Manager for Approval?"
+                    />
+                </xpath>
+
+                <!--Add a button to the existing header for reminder to attach receipt email-->
+                <xpath expr="//header" position="inside">
+                    <button name="send_reminder_email_template" string="Remind to Attach Receipt"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('state','not in',['approve','post','done'])]}"
+                            confirm="Are you sure you'd like to send a reminder email for employee to attach receipt?"
+                            groups="hr_expense.group_hr_expense_manager"
+                    />
+                </xpath>
+
+                <!--Adding field for Approving manager-->
+                <xpath expr="//field[@name='payment_mode']" position="after">
+                    <!--<field name="user_id"/>-->
+                    <field name="url" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

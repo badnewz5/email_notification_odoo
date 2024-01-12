@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_email_notification_extended_email_notification_extended,email_notification_extended.email_notification_extended,model_email_notification_extended_email_notification_extended,,1,0,0,0
